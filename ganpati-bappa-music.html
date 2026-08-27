@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ganpati Bappa Music — Ganesh Chaturthi Aarti & Bhajan Playlist</title>
+<meta name="description" content="Play Ganesh aartis, bhajans and mantras on Ganpati Bappa Music, the free Ganesh Chaturthi playlist website. No signup — open and press play.">
+<meta name="theme-color" content="#05080a">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05080a;
+    --panel:#0d1216;
+    --panel-soft:#12181d;
+    --line:rgba(255,178,56,0.14);
+    --amber:#ffb238;
+    --ember:#ff6a2b;
+    --deep-ember:#7a1f0c;
+    --cream:#f4e9d8;
+    --cream-dim:#9aa3a8;
+    --teal:#1f7a6c;
+    --magenta:#c23b6b;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--cream);
+    font-family:'Mukta',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--amber);}
+  ::selection{background:var(--ember);color:#05080a;}
+
+  header.top{
+    display:flex;justify-content:space-between;align-items:center;
+    max-width:960px;margin:0 auto;padding:18px 24px 0;
+    font-size:0.85rem;color:var(--cream-dim);
+  }
+  header.top .brand{font-weight:600;color:var(--cream);}
+  header.top a{text-decoration:none;border-bottom:1px dotted var(--amber);}
+
+  /* ---- Hero: hand-painted golden-hour folk art ---- */
+  .hero-art-wrap{
+    max-width:720px;margin:18px auto 0;padding:0 24px;
+  }
+  .hero-art{
+    width:100%;
+    display:block;
+    border-radius:20px;
+    overflow:hidden;
+  }
+
+  .hero-text{
+    max-width:720px;margin:0 auto;padding:26px 24px 10px;text-align:center;
+  }
+  h1.merged{
+    font-family:'Rozha One',serif;
+    font-weight:400;
+    font-size:clamp(1.9rem,7vw,3rem);
+    line-height:1.1;
+    margin:0 0 14px;
+    letter-spacing:0.005em;
+  }
+  h1.merged .dev{color:var(--amber);}
+  h1.merged .lat{color:var(--cream);font-family:'Mukta',sans-serif;font-weight:700;font-size:0.55em;vertical-align:2%;}
+
+  .chant{
+    font-size:1.05rem;
+    color:var(--cream-dim);
+    margin:0 0 6px;
+    font-weight:500;
+  }
+  .credit{
+    font-size:0.8rem;
+    color:var(--cream-dim);
+    opacity:0.75;
+    margin:0 0 22px;
+  }
+  .credit a{color:inherit;border-bottom:1px dotted currentColor;}
+  .strapline{
+    font-size:0.95rem;
+    color:var(--cream-dim);
+    margin:0 0 30px;
+  }
+
+  /* Player */
+  .player{
+    background:linear-gradient(180deg, var(--panel-soft), var(--panel));
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:20px 22px 18px;
+    max-width:440px;
+    margin:0 auto;
+    box-shadow:0 24px 60px -28px rgba(0,0,0,0.85);
+  }
+  .track-title{
+    font-size:0.95rem;font-weight:600;color:var(--cream);
+    min-height:1.4em;margin-bottom:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .track-sub{font-size:0.76rem;color:var(--cream-dim);margin-bottom:14px;}
+  .progress-row{
+    display:flex;align-items:center;gap:8px;
+    font-size:0.7rem;color:var(--cream-dim);margin-bottom:16px;
+  }
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;flex:1;height:4px;border-radius:4px;
+    background:rgba(244,233,216,0.15);outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:12px;height:12px;border-radius:50%;
+    background:var(--amber);box-shadow:0 0 6px rgba(255,178,56,0.7);cursor:pointer;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:12px;height:12px;border-radius:50%;background:var(--amber);border:none;cursor:pointer;
+  }
+  .controls{display:flex;align-items:center;justify-content:center;gap:22px;}
+  .ctrl-btn{background:none;border:none;cursor:pointer;color:var(--cream);padding:8px;transition:transform .15s,color .15s;}
+  .ctrl-btn:hover{color:var(--amber);transform:scale(1.08);}
+  .ctrl-btn:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:8px;}
+  .play-btn{
+    width:60px;height:60px;border-radius:50%;
+    background:linear-gradient(160deg, var(--amber), var(--ember));
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 10px 26px -8px rgba(255,106,43,0.55);
+  }
+  .play-btn svg{fill:#1a0d04;}
+  .volume-row{display:flex;align-items:center;gap:8px;margin-top:16px;opacity:0.8;}
+  .volume-row svg{flex-shrink:0;fill:var(--cream-dim);}
+
+  #yt-player-container{position:absolute;width:1px;height:1px;overflow:hidden;opacity:0;pointer-events:none;}
+
+  .status-line{text-align:center;font-size:0.76rem;color:var(--cream-dim);margin-top:14px;}
+
+  /* Intro */
+  section.intro{max-width:680px;margin:52px auto 0;padding:0 24px;text-align:center;}
+  section.intro h2{
+    font-family:'Rozha One',serif;font-weight:400;font-size:1.5rem;
+    color:var(--cream);margin-bottom:14px;
+  }
+  section.intro p{color:var(--cream-dim);line-height:1.65;font-size:0.95rem;margin:0;}
+
+  /* Feature cards */
+  section.features{
+    max-width:960px;margin:40px auto 0;padding:0 24px;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  }
+  @media (max-width:720px){section.features{grid-template-columns:1fr;}}
+  .feature-card{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;
+  }
+  .feature-card h3{
+    font-family:'Rozha One',serif;font-weight:400;color:var(--amber);font-size:1.15rem;margin:0 0 8px;
+  }
+  .feature-card p{color:var(--cream-dim);font-size:0.9rem;line-height:1.55;margin:0;}
+
+  section.about{max-width:680px;margin:56px auto 0;padding:0 24px 20px;}
+  section.about h2{
+    font-family:'Rozha One',serif;font-weight:400;font-size:1.5rem;color:var(--cream);text-align:center;margin-bottom:24px;
+  }
+  .faq-item{border-top:1px solid var(--line);padding:16px 0;}
+  .faq-item h4{margin:0 0 6px;font-size:0.98rem;color:var(--amber);font-weight:600;}
+  .faq-item p{margin:0;color:var(--cream-dim);font-size:0.9rem;line-height:1.55;}
+
+  footer{text-align:center;padding:44px 24px 40px;color:var(--cream-dim);font-size:0.8rem;}
+  footer a{text-decoration:none;color:var(--amber);}
+
+  @media (prefers-reduced-motion: reduce){ * { animation:none !important; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <span class="brand">Ganpati Bappa Music</span>
+  <a href="https://music.youtube.com/playlist?list=PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL" target="_blank" rel="noopener">Open on YouTube Music</a>
+</header>
+
+<!-- Hand-painted, golden-hour, flat-color folk-art hero — echoes the truck-art vernacular of the reference site -->
+<div class="hero-art-wrap">
+  <svg class="hero-art" viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Folk-art style painting of Ganpati idol at golden hour, in the style of hand-painted Indian truck art">
+    <defs>
+      <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#ffcf6b"/>
+        <stop offset="35%" stop-color="#ff8a3d"/>
+        <stop offset="65%" stop-color="#7a1f0c"/>
+        <stop offset="100%" stop-color="#0a0503"/>
+      </linearGradient>
+      <radialGradient id="sun" cx="50%" cy="42%" r="30%">
+        <stop offset="0%" stop-color="#fff1c9"/>
+        <stop offset="100%" stop-color="#ffcf6b" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="400" height="220" fill="url(#sky)"/>
+    <circle cx="200" cy="95" r="90" fill="url(#sun)"/>
+    <!-- distant hills -->
+    <path d="M0 165 Q80 140 160 165 T400 160 V220 H0 Z" fill="#3a0f08" opacity="0.9"/>
+    <path d="M0 185 Q100 165 220 185 T400 180 V220 H0 Z" fill="#1c0a06"/>
+    <!-- floral toran border, top -->
+    <g fill="none" stroke="#120a05" stroke-width="3">
+      <path d="M10 18 Q30 4 50 18 Q70 32 90 18 Q110 4 130 18 Q150 32 170 18 Q190 4 210 18 Q230 32 250 18 Q270 4 290 18 Q310 32 330 18 Q350 4 370 18 Q385 28 392 18" />
+    </g>
+    <g fill="#c23b6b" stroke="#120a05" stroke-width="2">
+      <circle cx="30" cy="18" r="6"/><circle cx="70" cy="18" r="6"/><circle cx="110" cy="18" r="6"/>
+      <circle cx="150" cy="18" r="6"/><circle cx="190" cy="18" r="6"/><circle cx="230" cy="18" r="6"/>
+      <circle cx="270" cy="18" r="6"/><circle cx="310" cy="18" r="6"/><circle cx="350" cy="18" r="6"/>
+    </g>
+    <g fill="#1f7a6c" stroke="#120a05" stroke-width="2">
+      <circle cx="50" cy="18" r="3.4"/><circle cx="90" cy="18" r="3.4"/><circle cx="130" cy="18" r="3.4"/>
+      <circle cx="170" cy="18" r="3.4"/><circle cx="210" cy="18" r="3.4"/><circle cx="250" cy="18" r="3.4"/>
+      <circle cx="290" cy="18" r="3.4"/><circle cx="330" cy="18" r="3.4"/>
+    </g>
+
+    <!-- Ganpati silhouette, flat folk-art style, thick outlines -->
+    <g transform="translate(200,150)">
+      <!-- crown -->
+      <path d="M-34 -78 Q0 -100 34 -78 L28 -60 L-28 -60 Z" fill="#ffb238" stroke="#120a05" stroke-width="3"/>
+      <circle cx="0" cy="-92" r="6" fill="#c23b6b" stroke="#120a05" stroke-width="2.5"/>
+      <!-- ears -->
+      <circle cx="-46" cy="-40" r="26" fill="#e2472b" stroke="#120a05" stroke-width="3"/>
+      <circle cx="46" cy="-40" r="26" fill="#e2472b" stroke="#120a05" stroke-width="3"/>
+      <circle cx="-46" cy="-40" r="12" fill="#7a1f0c"/>
+      <circle cx="46" cy="-40" r="12" fill="#7a1f0c"/>
+      <!-- head -->
+      <ellipse cx="0" cy="-46" rx="34" ry="30" fill="#e2472b" stroke="#120a05" stroke-width="3.5"/>
+      <!-- trunk -->
+      <path d="M-8 -30 Q-14 4 6 18 Q18 24 14 8" fill="none" stroke="#120a05" stroke-width="8" stroke-linecap="round"/>
+      <path d="M-8 -30 Q-14 4 6 18 Q18 24 14 8" fill="none" stroke="#ff8a3d" stroke-width="4" stroke-linecap="round"/>
+      <!-- eyes -->
+      <circle cx="-11" cy="-48" r="3.4" fill="#120a05"/>
+      <circle cx="11" cy="-48" r="3.4" fill="#120a05"/>
+      <!-- body / shoulders -->
+      <path d="M-40 -14 Q0 -30 40 -14 L48 40 Q0 56 -48 40 Z" fill="#ffb238" stroke="#120a05" stroke-width="3.5"/>
+      <!-- modak in hand -->
+      <path d="M52 8 Q64 -2 60 14 Q70 20 58 28 Q60 40 46 34 Q34 40 38 26 Q26 18 38 12 Q36 0 52 8 Z" fill="#fff1c9" stroke="#120a05" stroke-width="2.5"/>
+    </g>
+  </svg>
+</div>
+
+<div class="hero-text">
+  <h1 class="merged"><span class="dev">गणपती बाप्पा</span><span class="lat">Ganpati Bappa Music</span></h1>
+  <p class="chant">गणपती बाप्पा मोरया, पुढच्या वर्षा लवकर या</p>
+  <p class="credit">Made with 🙏 for Ganesh Chaturthi</p>
+  <p class="strapline">Ganpati bappa music, one tap away</p>
+
+  <div class="player">
+    <div class="track-title" id="trackTitle">Tap play to start the aarti</div>
+    <div class="track-sub" id="trackSub">Ganpati Bappa Songs · Aarti · Bhajan · Mantra</div>
+
+    <div class="progress-row">
+      <span id="curTime">0:00</span>
+      <input type="range" id="seekBar" min="0" max="100" value="0">
+      <span id="durTime">0:00</span>
+    </div>
+
+    <div class="controls">
+      <button class="ctrl-btn" id="prevBtn" aria-label="Previous track" title="Previous">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+      </button>
+      <button class="play-btn" id="playBtn" aria-label="Play">
+        <svg id="playIcon" width="24" height="24" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+      <button class="ctrl-btn" id="nextBtn" aria-label="Next track" title="Next">
+        <svg width="22" height="22" viewBox="0 0 24 24"><path d="M16 6h2v12h-2zM6 6l8.5 6L6 18z"/></svg>
+      </button>
+    </div>
+
+    <div class="volume-row">
+      <svg width="16" height="16" viewBox="0 0 24 24"><path d="M3 10v4h4l5 5V5L7 10H3z"/></svg>
+      <input type="range" id="volBar" min="0" max="100" value="70">
+    </div>
+  </div>
+
+  <p class="status-line" id="statusLine">Loading playlist…</p>
+</div>
+
+<div id="yt-player-container"><div id="yt-player"></div></div>
+
+<section class="intro">
+  <h2>The Ganesh Chaturthi playlist for the ten days</h2>
+  <p>Ganpati Bappa Music is a free playlist website for the Marathi aartis, Hindi bhajans and Sanskrit mantras heard in homes and pandals across the ten days of Ganeshotsav. Open the page, press play and keep the aarti running — there is no signup or app to install.</p>
+</section>
+
+<section class="features">
+  <div class="feature-card">
+    <h3>For the mandap</h3>
+    <p>A non-stop aarti and bhajan mix, clear enough for the pandal speaker or your home puja corner.</p>
+  </div>
+  <div class="feature-card">
+    <h3>Every tradition, one mix</h3>
+    <p>Marathi aartis, Hindi bhajans and Sanskrit mantras together, the way they're actually sung during the festival.</p>
+  </div>
+  <div class="feature-card">
+    <h3>No account needed</h3>
+    <p>Start listening here, or open the same playlist on YouTube Music whenever you want.</p>
+  </div>
+</section>
+
+<section class="about">
+  <h2>About this Ganpati playlist</h2>
+  <div class="faq-item">
+    <h4>What is Ganpati Bappa Music?</h4>
+    <p>It's a browser-based Ganesh Chaturthi music player built for quick, uninterrupted listening without registration.</p>
+  </div>
+  <div class="faq-item">
+    <h4>Does it work on a phone?</h4>
+    <p>Yes. The player is designed for mobile screens, with large play, skip and seek controls for easy use.</p>
+  </div>
+  <div class="faq-item">
+    <h4>Where does the music play from?</h4>
+    <p>The songs play through YouTube. You can also open the full playlist directly on YouTube Music.</p>
+  </div>
+</section>
+
+<footer>
+  <a href="https://music.youtube.com/playlist?list=PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL" target="_blank" rel="noopener">Open the playlist on YouTube Music</a>
+</footer>
+
+<script>
+  const PLAYLIST_ID = 'PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL'; // swap this for your own playlist ID
+
+  let player;
+  let isSeeking = false;
+
+  const trackTitle = document.getElementById('trackTitle');
+  const trackSub = document.getElementById('trackSub');
+  const statusLine = document.getElementById('statusLine');
+  const playBtn = document.getElementById('playBtn');
+  const playIcon = document.getElementById('playIcon');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const seekBar = document.getElementById('seekBar');
+  const volBar = document.getElementById('volBar');
+  const curTime = document.getElementById('curTime');
+  const durTime = document.getElementById('durTime');
+
+  const ICON_PLAY = '<path d="M8 5v14l11-7z"/>';
+  const ICON_PAUSE = '<path d="M6 5h5v14H6zm7 0h5v14h-5z"/>';
+
+  function fmt(sec){
+    if(!isFinite(sec) || sec < 0) sec = 0;
+    const m = Math.floor(sec/60);
+    const s = Math.floor(sec%60).toString().padStart(2,'0');
+    return `${m}:${s}`;
+  }
+
+  function loadYouTubeAPI(){
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.body.appendChild(tag);
+  }
+
+  window.onYouTubeIframeAPIReady = function(){
+    player = new YT.Player('yt-player', {
+      height: '1', width: '1',
+      playerVars:{ listType:'playlist', list: PLAYLIST_ID, autoplay:0 },
+      events:{ onReady: onPlayerReady, onStateChange: onPlayerStateChange, onError: onPlayerError }
+    });
+  };
+
+  function onPlayerReady(){
+    statusLine.textContent = 'Ready — tap play to begin';
+    player.setVolume(Number(volBar.value));
+  }
+  function onPlayerError(){
+    statusLine.textContent = 'Could not load this playlist — try opening it on YouTube Music instead.';
+  }
+  function updateNowPlaying(){
+    try{
+      const data = player.getVideoData();
+      if(data && data.title){
+        trackTitle.textContent = data.title;
+        trackSub.textContent = 'Ganpati Bappa Songs · Aarti · Bhajan · Mantra';
+      }
+    }catch(e){}
+  }
+  function onPlayerStateChange(e){
+    if(e.data === YT.PlayerState.PLAYING){
+      playIcon.innerHTML = ICON_PAUSE; playBtn.setAttribute('aria-label','Pause');
+      statusLine.textContent = ''; updateNowPlaying();
+    } else if(e.data === YT.PlayerState.PAUSED){
+      playIcon.innerHTML = ICON_PLAY; playBtn.setAttribute('aria-label','Play');
+    } else if(e.data === YT.PlayerState.CUED){
+      updateNowPlaying();
+    }
+  }
+
+  playBtn.addEventListener('click', () => {
+    if(!player || !player.getPlayerState) return;
+    const state = player.getPlayerState();
+    if(state === YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo();
+  });
+  prevBtn.addEventListener('click', () => player && player.previousVideo && player.previousVideo());
+  nextBtn.addEventListener('click', () => player && player.nextVideo && player.nextVideo());
+  volBar.addEventListener('input', () => { if(player && player.setVolume) player.setVolume(Number(volBar.value)); });
+
+  seekBar.addEventListener('mousedown', () => isSeeking = true);
+  seekBar.addEventListener('touchstart', () => isSeeking = true);
+  seekBar.addEventListener('change', () => {
+    if(player && player.getDuration){
+      const dur = player.getDuration();
+      player.seekTo(dur * (Number(seekBar.value)/100), true);
+    }
+    isSeeking = false;
+  });
+
+  setInterval(() => {
+    if(!player || !player.getCurrentTime || isSeeking) return;
+    try{
+      const cur = player.getCurrentTime();
+      const dur = player.getDuration();
+      if(dur > 0){
+        seekBar.value = (cur/dur) * 100;
+        curTime.textContent = fmt(cur);
+        durTime.textContent = fmt(dur);
+      }
+    }catch(e){}
+  }, 500);
+
+  loadYouTubeAPI();
+</script>
+
+</body>
+</html>

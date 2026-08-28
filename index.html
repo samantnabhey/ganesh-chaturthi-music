@@ -365,6 +365,7 @@
         let isPlaying = false;
         let updateInterval;
         let currentVideoIndex = 0;
+        let autoAdvanceGuard;
 
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
@@ -385,34 +386,46 @@
                 index: 0,
                 startSeconds: 0
             });
-            player.playVideo();
-            changeBackground();
+            setTimeout(() => {
+                player.playVideo();
+                changeBackground();
+            }, 500);
         }
 
         function onPlayerStateChange(event) {
             const playBtn = document.getElementById('play-btn');
             if (event.data === YT.PlayerState.PLAYING) {
-                const newIndex = player.getPlaylistIndex();
-                if (newIndex !== currentVideoIndex && currentVideoIndex !== 0) {
-                    player.pauseVideo();
-                    return;
-                }
-                currentVideoIndex = newIndex;
                 isPlaying = true;
                 playBtn.textContent = '⏸️';
+                currentVideoIndex = player.getPlaylistIndex();
                 startProgressUpdate();
+                startAutoAdvanceGuard();
             } else if (event.data === YT.PlayerState.PAUSED) {
                 isPlaying = false;
                 playBtn.textContent = '▶️';
                 clearInterval(updateInterval);
+                clearInterval(autoAdvanceGuard);
             } else if (event.data === YT.PlayerState.ENDED) {
                 changeBackground();
                 isPlaying = false;
                 playBtn.textContent = '▶️';
                 clearInterval(updateInterval);
+                clearInterval(autoAdvanceGuard);
                 document.getElementById('seek-fill').style.width = '0%';
                 document.getElementById('current-time').textContent = '0:00';
+                player.pauseVideo();
             }
+        }
+
+        function startAutoAdvanceGuard() {
+            clearInterval(autoAdvanceGuard);
+            autoAdvanceGuard = setInterval(() => {
+                const newIndex = player.getPlaylistIndex();
+                if (newIndex !== currentVideoIndex) {
+                    player.pauseVideo();
+                    clearInterval(autoAdvanceGuard);
+                }
+            }, 100);
         }
 
         function onPlayerError(event) {

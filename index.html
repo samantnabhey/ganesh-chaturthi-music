@@ -414,6 +414,13 @@
                 isPlaying = true;
                 playBtn.textContent = '⏸️';
                 startProgressUpdate();
+                // Get duration after video starts playing
+                setTimeout(() => {
+                    const duration = player.getDuration();
+                    if (duration > 0 && duration < 600) {
+                        document.getElementById('duration').textContent = formatTime(duration);
+                    }
+                }, 1000);
             } else if (event.data === YT.PlayerState.PAUSED) {
                 isPlaying = false;
                 playBtn.textContent = '▶️';
@@ -483,12 +490,9 @@
         function updateTrackInfo() {
             try {
                 const currentIndex = player.getPlaylistIndex();
-                const duration = player.getDuration();
-                if (duration > 0) {
-                    document.getElementById('duration').textContent = formatTime(duration);
-                }
-                const title = `Song ${currentIndex + 1}`;
+                const title = `Track ${currentIndex + 1}`;
                 document.getElementById('track-title').textContent = title;
+                document.getElementById('track-artist').textContent = 'Ganesh Chaturthi Playlist';
             } catch (e) {
                 document.getElementById('track-title').textContent = 'Now Playing...';
             }

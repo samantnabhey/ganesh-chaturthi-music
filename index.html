@@ -28,9 +28,6 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
             transition: background 0.8s ease-in-out;
         }
 
@@ -341,7 +338,7 @@
 
             <div class="playlist-link">
                 <a href="https://music.youtube.com/playlist?list=PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL" target="_blank" class="btn-secondary">
-                    Open Playlist on YouTube Music →
+                    ▶️ Play on YouTube Music
                 </a>
             </div>
 
@@ -382,11 +379,6 @@
                 height: '0',
                 width: '0',
                 videoId: '',
-                playerVars: {
-                    'autoplay': 1,
-                    'mute': 1,
-                    'controls': 0
-                },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange,
@@ -396,12 +388,12 @@
         }
 
         function onPlayerReady(event) {
-            console.log('Player ready');
             player.loadPlaylist({
                 list: PLAYLIST_ID,
                 index: 0,
                 startSeconds: 0
             });
+            player.playVideo();
             changeBackground();
         }
 
@@ -417,19 +409,16 @@
                 clearInterval(updateInterval);
             } else if (event.data === YT.PlayerState.ENDED) {
                 changeBackground();
-                playBtn.textContent = '▶️';
             }
-            updateTrackInfo();
         }
 
         function onPlayerError(event) {
-            console.error('Player error:', event.data);
+            console.error('YouTube Player Error:', event.data);
         }
 
         function changeBackground() {
             const randomBg = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
-            const bgContainer = document.getElementById('bg-container');
-            bgContainer.style.background = randomBg;
+            document.getElementById('bg-container').style.background = randomBg;
         }
 
         document.getElementById('play-btn').addEventListener('click', () => {
@@ -443,21 +432,17 @@
         document.getElementById('next-btn').addEventListener('click', () => {
             player.nextVideo();
             changeBackground();
-            setTimeout(updateTrackInfo, 500);
         });
 
         document.getElementById('prev-btn').addEventListener('click', () => {
             player.previousVideo();
             changeBackground();
-            setTimeout(updateTrackInfo, 500);
         });
 
         document.getElementById('seek-bar').addEventListener('click', (e) => {
-            const bar = e.currentTarget;
-            const rect = bar.getBoundingClientRect();
+            const rect = e.currentTarget.getBoundingClientRect();
             const percent = (e.clientX - rect.left) / rect.width;
-            const duration = player.getDuration();
-            player.seekTo(percent * duration);
+            player.seekTo(percent * player.getDuration());
         });
 
         function startProgressUpdate() {
@@ -465,7 +450,6 @@
             updateInterval = setInterval(() => {
                 const current = player.getCurrentTime();
                 const duration = player.getDuration();
-
                 if (duration > 0) {
                     const percent = (current / duration) * 100;
                     document.getElementById('seek-fill').style.width = percent + '%';
@@ -473,11 +457,6 @@
                     document.getElementById('duration').textContent = formatTime(duration);
                 }
             }, 500);
-        }
-
-        function updateTrackInfo() {
-            const title = `Now Playing...`;
-            document.getElementById('track-title').textContent = title;
         }
 
         function formatTime(seconds) {
@@ -500,9 +479,7 @@
         tag.src = 'https://www.youtube.com/iframe_api';
         document.head.appendChild(tag);
 
-        window.addEventListener('load', () => {
-            setTimeout(updateTrackInfo, 1000);
-        });
+        changeBackground();
     </script>
 </body>
 </html>

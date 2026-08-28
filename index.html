@@ -336,15 +336,6 @@
                 </div>
             </div>
 
-            <div class="playlist-link">
-                <a href="https://music.youtube.com/playlist?list=PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL" target="_blank" class="btn-secondary">
-                    ▶️ Play on YouTube Music
-                </a>
-            </div>
-
-            <div class="support-section">
-                <a href="https://buymeacoffee.com" target="_blank" class="btn-support">☕ Support This Project</a>
-            </div>
         </div>
 
         <div class="footer">
@@ -409,6 +400,9 @@
                 clearInterval(updateInterval);
             } else if (event.data === YT.PlayerState.ENDED) {
                 changeBackground();
+                isPlaying = false;
+                playBtn.textContent = '▶️';
+                clearInterval(updateInterval);
             }
         }
 

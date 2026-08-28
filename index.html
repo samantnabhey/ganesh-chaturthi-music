@@ -28,7 +28,13 @@
             width: 100%;
             height: 100%;
             z-index: -2;
-            transition: background 0.8s ease-in-out;
+            overflow: hidden;
+        }
+
+        #bg-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .background-overlay {
@@ -301,7 +307,11 @@
     </style>
 </head>
 <body>
-    <div class="background-container" id="bg-container"></div>
+    <div class="background-container" id="bg-container">
+        <video id="bg-video" autoplay muted loop playsinline>
+            <source id="video-source" src="" type="video/mp4">
+        </video>
+    </div>
     <div class="background-overlay"></div>
 
     <div class="container">
@@ -348,17 +358,8 @@
     <script>
         const PLAYLIST_ID = 'PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL';
 
-        const BACKGROUNDS = [
-            'linear-gradient(135deg, #FF6B35 0%, #D32F2F 100%)',
-            'linear-gradient(135deg, #FFC107 0%, #FF9800 100%)',
-            'linear-gradient(135deg, #D32F2F 0%, #FF6B35 50%, #FFC107 100%)',
-            'linear-gradient(135deg, #FF9800 0%, #D32F2F 100%)',
-            'linear-gradient(135deg, #FFC107 0%, #FF6B35 100%)',
-            'linear-gradient(45deg, #D32F2F 0%, #FFC107 100%)',
-            'linear-gradient(180deg, #FF6B35 0%, #D32F2F 100%)',
-            'linear-gradient(90deg, #FFC107 0%, #FF6B35 100%)',
-            'linear-gradient(135deg, #FF6B35 0%, #FFC107 50%, #D32F2F 100%)',
-            'linear-gradient(45deg, #FFC107 0%, #FF9800 100%)',
+        const VIDEOS = [
+            'https://drive.google.com/uc?export=download&id=1ENNrB4dUDtyDVDR16CBRRHCx3BXfIuAv',
         ];
 
         let player;
@@ -433,8 +434,12 @@
         }
 
         function changeBackground() {
-            const randomBg = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
-            document.getElementById('bg-container').style.background = randomBg;
+            const randomVideo = VIDEOS[Math.floor(Math.random() * VIDEOS.length)];
+            const videoSource = document.getElementById('video-source');
+            videoSource.src = randomVideo;
+            const video = document.getElementById('bg-video');
+            video.load();
+            video.play();
         }
 
         document.getElementById('play-btn').addEventListener('click', () => {

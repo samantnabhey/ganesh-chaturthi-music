@@ -360,20 +360,18 @@
     <script>
         const PLAYLIST_ID = 'PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL'; // Ganesh Chaturthi playlist
 
-        // Random background images/GIFs pool (Ganesh/Ganpati/Festival related)
+        // Random background gradients + colors
         const BACKGROUNDS = [
-            'https://images.unsplash.com/photo-1584695289969-142f133b2358?w=1200&h=1500&fit=crop', // Ganesh idol
-            'https://images.unsplash.com/photo-1565195292134-d5ef03a11e5b?w=1200&h=1500&fit=crop', // Festival lights
-            'https://images.unsplash.com/photo-1571506888349-fcdbc0cd77f3?w=1200&h=1500&fit=crop', // Diwali lamps
-            'https://images.unsplash.com/photo-1564621592915-38b9c10ed43f?w=1200&h=1500&fit=crop', // Rangoli
-            'https://images.unsplash.com/photo-1556888287-02eba5ee4b0f?w=1200&h=1500&fit=crop', // Orange flowers
-            'https://images.unsplash.com/photo-1579783902614-e3fb5141b0cb?w=1200&h=1500&fit=crop', // Temple
-            'https://images.unsplash.com/photo-1541417904180-aaf00b911b7e?w=1200&h=1500&fit=crop', // Celebration
-            'https://images.unsplash.com/photo-1571123636259-a25cdba0b38a?w=1200&h=1500&fit=crop', // Gold pattern
-            'https://images.unsplash.com/photo-1580190049979-5a1fd09b2033?w=1200&h=1500&fit=crop', // Festival mask
-            'https://images.unsplash.com/photo-1577720643272-265461cf5a85?w=1200&h=1500&fit=crop', // Colorful celebration
-            'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=1500&fit=crop', // Mountain temple
-            'https://images.unsplash.com/photo-1521632398364-24b88908f5d0?w=1200&h=1500&fit=crop', // Flowers ornament
+            'linear-gradient(135deg, #FF6B35 0%, #D32F2F 100%)',
+            'linear-gradient(135deg, #FFC107 0%, #FF9800 100%)',
+            'linear-gradient(135deg, #D32F2F 0%, #FF6B35 50%, #FFC107 100%)',
+            'linear-gradient(135deg, #FF9800 0%, #D32F2F 100%)',
+            'linear-gradient(135deg, #FFC107 0%, #FF6B35 100%)',
+            'linear-gradient(45deg, #D32F2F 0%, #FFC107 100%)',
+            'linear-gradient(180deg, #FF6B35 0%, #D32F2F 100%)',
+            'linear-gradient(90deg, #FFC107 0%, #FF6B35 100%)',
+            'linear-gradient(135deg, #FF6B35 0%, #FFC107 50%, #D32F2F 100%)',
+            'linear-gradient(45deg, #FFC107 0%, #FF9800 100%)',
         ];
 
         let player;
@@ -386,6 +384,11 @@
                 height: '0',
                 width: '0',
                 videoId: '',
+                playerVars: {
+                    'autoplay': 1,
+                    'mute': 1,
+                    'controls': 0
+                },
                 events: {
                     'onReady': onPlayerReady,
                     'onStateChange': onPlayerStateChange,
@@ -425,11 +428,11 @@
             console.error('Player error:', event.data);
         }
 
-        // Change background to random image
+        // Change background to random gradient
         function changeBackground() {
             const randomBg = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
             const bgContainer = document.getElementById('bg-container');
-            bgContainer.style.backgroundImage = `url('${randomBg}')`;
+            bgContainer.style.background = randomBg;
         }
 
         // UI Controls

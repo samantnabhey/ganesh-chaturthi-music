@@ -385,8 +385,6 @@
                 width: '0',
                 videoId: '',
                 playerVars: {
-                    'autoplay': 1,
-                    'mute': 1,
                     'controls': 0
                 },
                 events: {
@@ -404,6 +402,9 @@
                 index: 0,
                 startSeconds: 0
             });
+            setTimeout(() => {
+                player.playVideo();
+            }, 500);
             changeBackground();
         }
 

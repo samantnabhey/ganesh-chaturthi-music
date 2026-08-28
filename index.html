@@ -31,7 +31,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: background-image 0.8s ease-in-out;
+            transition: background 0.8s ease-in-out;
         }
 
         .background-overlay {
@@ -319,7 +319,7 @@
 
         <div class="player-card">
             <div class="track-info">
-                <div class="track-title" id="track-title">Loading...</div>
+                <div class="track-title" id="track-title">Now Playing...</div>
                 <div class="track-artist" id="track-artist">Ganesh Chaturthi Playlist</div>
             </div>
 
@@ -358,9 +358,8 @@
     <div id="youtube-player"></div>
 
     <script>
-        const PLAYLIST_ID = 'PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL'; // Ganesh Chaturthi playlist
+        const PLAYLIST_ID = 'PLzlNlQTagdFDqpZH9Zx7eIKYa4V3GLZrL';
 
-        // Random background gradients + colors
         const BACKGROUNDS = [
             'linear-gradient(135deg, #FF6B35 0%, #D32F2F 100%)',
             'linear-gradient(135deg, #FFC107 0%, #FF9800 100%)',
@@ -378,13 +377,14 @@
         let isPlaying = false;
         let updateInterval;
 
-        // Initialize YouTube API
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('youtube-player', {
                 height: '0',
                 width: '0',
                 videoId: '',
                 playerVars: {
+                    'autoplay': 1,
+                    'mute': 1,
                     'controls': 0
                 },
                 events: {
@@ -402,9 +402,6 @@
                 index: 0,
                 startSeconds: 0
             });
-            setTimeout(() => {
-                player.playVideo();
-            }, 500);
             changeBackground();
         }
 
@@ -414,19 +411,12 @@
                 isPlaying = true;
                 playBtn.textContent = '⏸️';
                 startProgressUpdate();
-                // Get duration after video starts playing
-                setTimeout(() => {
-                    const duration = player.getDuration();
-                    if (duration > 0 && duration < 600) {
-                        document.getElementById('duration').textContent = formatTime(duration);
-                    }
-                }, 1000);
             } else if (event.data === YT.PlayerState.PAUSED) {
                 isPlaying = false;
                 playBtn.textContent = '▶️';
                 clearInterval(updateInterval);
             } else if (event.data === YT.PlayerState.ENDED) {
-                changeBackground(); // New background when song ends
+                changeBackground();
                 playBtn.textContent = '▶️';
             }
             updateTrackInfo();
@@ -436,14 +426,12 @@
             console.error('Player error:', event.data);
         }
 
-        // Change background to random gradient
         function changeBackground() {
             const randomBg = BACKGROUNDS[Math.floor(Math.random() * BACKGROUNDS.length)];
             const bgContainer = document.getElementById('bg-container');
             bgContainer.style.background = randomBg;
         }
 
-        // UI Controls
         document.getElementById('play-btn').addEventListener('click', () => {
             if (isPlaying) {
                 player.pauseVideo();
@@ -478,7 +466,7 @@
                 const current = player.getCurrentTime();
                 const duration = player.getDuration();
 
-                if (duration > 0 && duration < 3600) { // Valid video duration (less than 1 hour)
+                if (duration > 0) {
                     const percent = (current / duration) * 100;
                     document.getElementById('seek-fill').style.width = percent + '%';
                     document.getElementById('current-time').textContent = formatTime(current);
@@ -488,14 +476,8 @@
         }
 
         function updateTrackInfo() {
-            try {
-                const currentIndex = player.getPlaylistIndex();
-                const title = `Track ${currentIndex + 1}`;
-                document.getElementById('track-title').textContent = title;
-                document.getElementById('track-artist').textContent = 'Ganesh Chaturthi Playlist';
-            } catch (e) {
-                document.getElementById('track-title').textContent = 'Now Playing...';
-            }
+            const title = `Now Playing...`;
+            document.getElementById('track-title').textContent = title;
         }
 
         function formatTime(seconds) {
@@ -505,7 +487,6 @@
             return `${mins}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Simulate live listener count
         function updateListenerCount() {
             const baseCount = 1234;
             const variance = Math.floor(Math.random() * 500) - 250;
@@ -515,12 +496,10 @@
 
         setInterval(updateListenerCount, 5000);
 
-        // Load YouTube API
         const tag = document.createElement('script');
         tag.src = 'https://www.youtube.com/iframe_api';
         document.head.appendChild(tag);
 
-        // Initialize on load
         window.addEventListener('load', () => {
             setTimeout(updateTrackInfo, 1000);
         });

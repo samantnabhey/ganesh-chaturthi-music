@@ -54,54 +54,6 @@
             opacity: 1;
         }
 
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            text-align: center;
-            padding: 20px;
-            z-index: 20;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        body:hover .header {
-            opacity: 1;
-        }
-
-        .header h1 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-        }
-
-        .live-count {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .live-dot {
-            display: inline-block;
-            width: 6px;
-            height: 6px;
-            background: #4CAF50;
-            border-radius: 50%;
-            margin-right: 5px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
 
         .player-container {
             position: fixed;
@@ -112,10 +64,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
-            padding: 40px 20px 30px;
+            padding: 15px 20px;
             z-index: 10;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.3));
             height: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .player-controls {
@@ -165,7 +118,7 @@
         .progress-bar-container {
             width: 100%;
             max-width: 400px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .seek-bar {
@@ -231,13 +184,6 @@
     </div>
     <div class="background-overlay"></div>
 
-    <div class="header">
-        <h1>गणपती बाप्पा मोरया</h1>
-        <div class="live-count">
-            <span class="live-dot"></span>
-            <span id="listener-count">1,234</span> celebrating
-        </div>
-    </div>
 
     <div class="player-container">
         <div class="progress-bar-container">
